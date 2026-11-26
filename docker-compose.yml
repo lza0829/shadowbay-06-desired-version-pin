@@ -1,0 +1,17 @@
+name: shadowbay
+services:
+  backend:
+    build: ./backend
+    ports: ["12100:12100"]
+    volumes:
+      - shadowbay_data:/data
+      - ./fixtures:/fixtures:ro
+    environment:
+      数据目录: /data
+      预置目录: /fixtures
+  frontend:
+    build: ./frontend
+    ports: ["7100:80"]
+    depends_on: [backend]
+volumes:
+  shadowbay_data:

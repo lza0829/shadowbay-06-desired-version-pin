@@ -1,0 +1,240 @@
+:root {
+  --bg: #14171c;
+  --bg2: #1c2129;
+  --ink: #e8ece6;
+  --mute: #8d9688;
+  --line: #2c3430;
+  --copper: #d4894a;
+  --phosphor: #b7f25a;
+  --steel: #7f93a8;
+  --bad: #e35d4a;
+  --ok: #6fd39a;
+  --display: "Sora", "Noto Sans SC", sans-serif;
+  --body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--body);
+  background:
+    radial-gradient(900px 420px at 8% -8%, rgba(212, 137, 74, 0.16), transparent 55%),
+    radial-gradient(700px 380px at 100% 0%, rgba(183, 242, 90, 0.08), transparent 50%),
+    repeating-linear-gradient(
+      -12deg,
+      transparent,
+      transparent 11px,
+      rgba(127, 147, 168, 0.03) 11px,
+      rgba(127, 147, 168, 0.03) 12px
+    ),
+    var(--bg);
+}
+
+.壳 { min-height: 100vh; display: flex; flex-direction: column; }
+
+.顶轨 {
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(28, 33, 41, 0.96), rgba(20, 23, 28, 0.92));
+  backdrop-filter: blur(8px);
+  padding: 1.1rem 1.6rem 0.85rem;
+  display: grid;
+  gap: 0.85rem;
+}
+.顶牌 {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.顶英 {
+  font-family: var(--display);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+.顶名 {
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  margin: 0.15rem 0 0;
+  letter-spacing: -0.03em;
+}
+.顶名 span { color: var(--phosphor); }
+.顶骨 {
+  max-width: 28rem;
+  color: var(--mute);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  margin: 0;
+  text-align: right;
+}
+.顶导 {
+  display: flex;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(44, 52, 48, 0.8);
+  padding-top: 0.65rem;
+}
+.顶导 a {
+  color: var(--mute);
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+}
+.顶导 a.亮 {
+  color: var(--ink);
+  border-bottom-color: var(--phosphor);
+}
+.顶脚标 {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--steel);
+  letter-spacing: 0.06em;
+}
+
+.主 {
+  flex: 1;
+  padding: 1.4rem 1.6rem 2.4rem;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.题 {
+  font-family: var(--display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.02em;
+}
+.述 { color: var(--mute); margin: 0 0 1.1rem; line-height: 1.5; max-width: 40rem; }
+
+.行 { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+button, .钮 {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--bg2);
+  color: var(--ink);
+  padding: 0.48rem 0.9rem;
+}
+button.主钮 {
+  background: var(--phosphor);
+  color: #152012;
+  border-color: transparent;
+  font-weight: 700;
+}
+button.铜钮 {
+  background: transparent;
+  border-color: var(--copper);
+  color: var(--copper);
+}
+.讯 { font-family: var(--mono); font-size: 0.8rem; color: var(--steel); }
+
+.对影 {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+  margin: 1.1rem 0 1.4rem;
+  min-height: 220px;
+}
+.影栏 {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(160deg, rgba(212, 137, 74, 0.07), transparent 40%),
+    var(--bg2);
+  padding: 1rem 1.05rem 1.15rem;
+  position: relative;
+  overflow: hidden;
+}
+.影栏::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--copper);
+}
+.影栏.上报::before { background: var(--phosphor); }
+.影眉 {
+  font-family: var(--display);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 0.55rem;
+}
+.影体 {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.45;
+  color: var(--ink);
+  min-height: 7rem;
+}
+.影缝 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  writing-mode: vertical-rl;
+}
+.影缝 .点 {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--phosphor);
+  box-shadow: 0 0 12px rgba(183, 242, 90, 0.55);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.带条 {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  border-top: 1px dashed var(--line);
+  padding-top: 0.9rem;
+  margin-top: 0.4rem;
+}
+.带项 {
+  font-family: var(--mono);
+  font-size: 0.84rem;
+}
+.带项 b { color: var(--copper); font-size: 1.15rem; margin-right: 0.35rem; }
+.带项 span { color: var(--mute); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th, td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 0.35rem;
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--mute); font-weight: 600; font-size: 0.8rem; }
+.好 { color: var(--ok); }
+.坏 { color: var(--bad); }
+.淡 { color: var(--mute); }
+
+@media (max-width: 820px) {
+  .对影 { grid-template-columns: 1fr; }
+  .影缝 { writing-mode: horizontal-tb; flex-direction: row; padding: 0.2rem 0; }
+  .顶骨 { text-align: left; max-width: none; }
+}

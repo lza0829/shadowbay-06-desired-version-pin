@@ -1,0 +1,8 @@
+{
+  "设备键": "dev-bay-01",
+  "上报载荷": {
+    "mode": "edge",
+    "interval_sec": 30,
+    "relay": "on"
+  }
+}
