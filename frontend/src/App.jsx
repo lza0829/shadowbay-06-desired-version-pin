@@ -4,6 +4,7 @@ import 入口 from "./pages/入口.jsx";
 import 设备册 from "./pages/设备册.jsx";
 import 影子台 from "./pages/影子台.jsx";
 import 指令廊 from "./pages/指令廊.jsx";
+import 版本钉 from "./pages/版本钉.jsx";
 import 断线补投 from "./pages/断线补投.jsx";
 import 凭证轮 from "./pages/凭证轮.jsx";
 import 对影验 from "./pages/对影验.jsx";
@@ -13,6 +14,7 @@ const 链 = [
   ["/设备册", "设备册"],
   ["/影子台", "影子台"],
   ["/指令廊", "指令廊"],
+  ["/版本钉", "版本钉"],
   ["/断线补投", "断线补投"],
   ["/凭证轮", "凭证轮"],
   ["/对影验", "对影验"],
@@ -46,6 +48,7 @@ export default function App() {
           <Route path="/设备册" element={<设备册 />} />
           <Route path="/影子台" element={<影子台 />} />
           <Route path="/指令廊" element={<指令廊 />} />
+          <Route path="/版本钉" element={<版本钉 />} />
           <Route path="/断线补投" element={<断线补投 />} />
           <Route path="/凭证轮" element={<凭证轮 />} />
           <Route path="/对影验" element={<对影验 />} />

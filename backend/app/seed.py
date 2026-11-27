@@ -25,6 +25,11 @@ STUBS = [
     "边缘缓冲溢出",
 ]
 
+# 已从空桩落地的模块：空桩表状态不再显示“空桩”。
+落地状态 = {
+    "期望版本钉": "已落地·钉版可核",
+}
+
 建表 = """
 CREATE TABLE IF NOT EXISTS 设备册 (
   设备键 TEXT PRIMARY KEY,
@@ -43,6 +48,13 @@ CREATE TABLE IF NOT EXISTS 影子台 (
   上报版 INTEGER NOT NULL DEFAULT 0,
   更新时 TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS 期望版本史 (
+  设备键 TEXT NOT NULL,
+  期望版 INTEGER NOT NULL,
+  期望载荷 TEXT NOT NULL,
+  写时 TEXT NOT NULL,
+  PRIMARY KEY (设备键, 期望版)
+);
 CREATE TABLE IF NOT EXISTS 指令廊 (
   令号 TEXT PRIMARY KEY,
   设备键 TEXT NOT NULL,
@@ -52,7 +64,15 @@ CREATE TABLE IF NOT EXISTS 指令廊 (
   凭证指纹 TEXT NOT NULL DEFAULT '',
   下发时 TEXT NOT NULL,
   闭环时 TEXT NOT NULL DEFAULT '',
-  说明 TEXT NOT NULL DEFAULT ''
+  说明 TEXT NOT NULL DEFAULT '',
+  取版策略 TEXT NOT NULL DEFAULT '钉版',
+  钉住期望版 INTEGER NOT NULL DEFAULT 0,
+  期望快照 TEXT NOT NULL DEFAULT '',
+  快照核 TEXT NOT NULL DEFAULT '',
+  版源 TEXT NOT NULL DEFAULT '',
+  令源 TEXT NOT NULL DEFAULT '',
+  执行期望版 INTEGER NOT NULL DEFAULT 0,
+  执行载荷 TEXT NOT NULL DEFAULT ''
 );
 CREATE TABLE IF NOT EXISTS 补投条 (
   条号 TEXT PRIMARY KEY,
@@ -77,15 +97,38 @@ CREATE TABLE IF NOT EXISTS 空桩 (
 );
 """
 
+# 旧库增量迁移：期望版本钉给指令廊补的钉版列。
+指令廊补列 = [
+    ("取版策略", "TEXT NOT NULL DEFAULT '钉版'"),
+    ("钉住期望版", "INTEGER NOT NULL DEFAULT 0"),
+    ("期望快照", "TEXT NOT NULL DEFAULT ''"),
+    ("快照核", "TEXT NOT NULL DEFAULT ''"),
+    ("版源", "TEXT NOT NULL DEFAULT ''"),
+    ("令源", "TEXT NOT NULL DEFAULT ''"),
+    ("执行期望版", "INTEGER NOT NULL DEFAULT 0"),
+    ("执行载荷", "TEXT NOT NULL DEFAULT ''"),
+]
+
 
 def 现在() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _迁移(c) -> None:
+    已有 = {r["name"] for r in c.execute("PRAGMA table_info(指令廊)").fetchall()}
+    for 列名, 声明 in 指令廊补列:
+        if 列名 not in 已有:
+            c.execute(f"ALTER TABLE 指令廊 ADD COLUMN {列名} {声明}")
+
+
 def 初始化库() -> None:
     c = 连接()
     c.executescript(建表)
+    _迁移(c)
     c.execute("DELETE FROM 空桩")
-    c.executemany("INSERT INTO 空桩(名, 状态) VALUES (?, ?)", [(s, "空桩") for s in STUBS])
+    c.executemany(
+        "INSERT INTO 空桩(名, 状态) VALUES (?, ?)",
+        [(s, 落地状态.get(s, "空桩")) for s in STUBS],
+    )
     c.commit()
     c.close()
